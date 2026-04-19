@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        device: [r1p, r1p-lts, r1s, r1s-h3, r2c, r2s, r4s, r4se, r5s, r5c, r6s, r6c, x86]
+        device: [r2s]
     steps:
         - name: Trigger Compile
           run: |
@@ -33,5 +33,5 @@ jobs:
             curl \
             -X POST https://api.github.com/repos/${{ github.repository }}/dispatches \
             -H "Accept: application/vnd.github.everest-preview+json" \
-            -H "Authorization: token ${{ secrets.SEC_TOKEN }}" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -d '{"event_type": "${{ matrix.device }}", "client_payload": {"branch": "'$branch'", "device": "${{ matrix.device }}", "package_clean": "${{ github.event.inputs.package_clean }}", "debug": "${{ github.event.inputs.debug }}" }}'
