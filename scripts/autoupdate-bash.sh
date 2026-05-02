@@ -26,11 +26,17 @@ arch=`uname -m`
 mount -t tmpfs -o remount,size=850m tmpfs /tmp
 rm -rf /tmp/upg && mkdir /tmp/upg && cd /tmp/upg
 
-latest_release_tag=`get_latest_release stupidloud/nanopi-openwrt`
+latest_release_tag=`get_latest_release iceend/nanopi-openwrt`
 echo -e '\e[92m准备更新到'$latest_release_tag'\e[0m'
-md5sum=`wget https://mirror.ghproxy.com/https://github.com/stupidloud/nanopi-openwrt/releases/download/$latest_release_tag/$board_id$ver.img.gz -O- | tee >(gzip -dc>$board_id.img) | md5sum | awk '{print $1}'`
+# New release layout uses date-based filenames like r2s-YYYY-MM-DD.img.gz.
+# For compatibility with older slim/x86 naming we still honor $ver/$board_id.
+asset_base="$board_id$ver"
+case "$board_id" in
+	r2s) asset_base="r2s-${latest_release_tag}${ver}";;
+esac
+md5sum=`wget https://github.com/iceend/nanopi-openwrt/releases/download/$latest_release_tag/${asset_base}.img.gz -O- | tee >(gzip -dc>$board_id.img) | md5sum | awk '{print $1}'`
 if [ "$md5sum" != "d41d8cd98f00b204e9800998ecf8427e" ]; then
-	wget https://mirror.ghproxy.com/https://github.com/stupidloud/nanopi-openwrt/releases/download/$latest_release_tag/$board_id$ver.img.gz.md5 -O md5sum.txt
+	wget https://github.com/iceend/nanopi-openwrt/releases/download/$latest_release_tag/${asset_base}.img.gz.md5 -O md5sum.txt
 	echo -e '\e[92m'$latest_release_tag'固件已下载\e[0m'
 fi
 

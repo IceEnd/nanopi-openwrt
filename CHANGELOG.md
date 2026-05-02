@@ -2,6 +2,15 @@
 # 更新日志
 ###### （如果没有特别说明，更新内容就是上游Lean和Lienol两位大佬的代码更新）
 
+## 2026-05-03
+
+- 迁移到 iceend/nanopi-openwrt，固件基线改为官方 OpenWrt 最新稳定版 (默认 `v25.12.2`)。
+- 新增 R2S 专用构建工作流 `.github/workflows/build-r2s.yml`，支持 `openwrt_ref`、`release`、`clean_build`、`ssh_debug` 输入。
+- 重写 `r2s.config.seed`、`common.seed`、`extra_packages.seed` 以匹配官方 25.12 feeds；使用 `make defconfig` 的宽容机制保留旧包名清单。
+- 重写 `scripts/merge_packages.sh`，改用 `kenzok8/small-package` + `xiaorouji/openwrt-passwall` 现代 feeds 提供 OpenClash/AdGuardHome/Passwall。
+- 重写 `scripts/patches.sh`、`scripts/merge_files.sh`，全部 sed/find 带存在性保护，移除 R1S/R6S 专属 Lean/ImmortalWrt hack。
+- 更新升级脚本和 README 指向 iceend/nanopi-openwrt；旧流程 `lo-test.yml`/`dispatch.yml` 降级为 legacy。
+
 ## 2021-09-26
 
 - 增加机型：[NanoPi R5S](https://wiki.friendlyelec.com/wiki/index.php/NanoPi_R5S/zh) 的支持，暂不支持autoupdate

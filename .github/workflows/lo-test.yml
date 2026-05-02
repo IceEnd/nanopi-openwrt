@@ -1,7 +1,13 @@
-name: build
+name: legacy-build (disabled)
 
+# LEGACY WORKFLOW — DO NOT USE
+#
+# This workflow targeted coolsnowwolf/lede with the stupidloud/* release-asset
+# caching scheme and has been kept here for history only. It will no longer
+# succeed under the iceend/nanopi-openwrt repo (missing SEC_TOKEN / cache /
+# actions v2 / Lean-specific logic). Use `.github/workflows/build-r2s.yml`
+# instead.
 on:
-  repository_dispatch:
   workflow_dispatch:
     inputs:
       device:
@@ -22,6 +28,8 @@ jobs:
       DEVICE: ${{ github.event.client_payload.device || github.event.inputs.device }}
       BRANCH: ${{ github.event.client_payload.branch || github.event.inputs.branch }}
       TG: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+    # Legacy workflow is disabled by default; keep the repository owner guard
+    # so it never silently runs under the new fork.
     if: github.repository_owner=='stupidloud'
 
     steps:

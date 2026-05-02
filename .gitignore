@@ -1,0 +1,9 @@
+# Temporary working directories
+.tmp-passwall-packages/
+openwrt/
+lede/
+release/
+
+# OS / editor noise
+.DS_Store
+*.swp
